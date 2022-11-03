@@ -8,7 +8,8 @@
     "url": "git+https://github.com/Werewolves-SDC/QuestionsAnswers-API.git"
   },
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "server-dev": "npx nodemon --watch server server/index.js"
   },
   "author": "Kally Cao",
   "license": "ISC",

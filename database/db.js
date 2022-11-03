@@ -1,12 +1,21 @@
-require('dotenv').config();
+// require('dotenv').config();
 const { Client } = require('pg');
 
 const client = new Client({
-  user: process.env.USER,
-  host: process.env.HOST,
-  database: process.env.DB,
-  password: process.env.PASSWORD,
+  user: 'kallycao',
+  host: 'localhost',
+  database: 'questionsanswersdb',
+  password: '',
   port: 5432,
+});
+
+
+client.connect((err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Successful connection')
+  }
 });
 
 const questionQuery = `CREATE TABLE IF NOT EXISTS questions (
@@ -20,11 +29,6 @@ const questionQuery = `CREATE TABLE IF NOT EXISTS questions (
   reported BOOLEAN NOT NULL DEFAULT FALSE
 );`;
 
-client.connect()
-  .then(() => console.log('connected'))
-  .catch(err => console.log(err))
-
-
 
 client.query(questionQuery, (err, res) => {
   if (err) {
@@ -34,3 +38,5 @@ client.query(questionQuery, (err, res) => {
   console.log('Questions table is successfully created');
   client.end();
 });
+
+module.exports = client;
