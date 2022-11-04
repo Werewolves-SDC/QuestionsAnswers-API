@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const db = require('../database/db');
+const db = require('../database/postgreSQL/db.js');
 
 const app = express();
 

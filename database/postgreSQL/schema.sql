@@ -1,6 +1,7 @@
 -- DROP TABLE IF EXISTS questions CASCADE;
 -- DROP TABLE IF EXISTS answers CASCADE;
 -- DROP TABLE IF EXISTS answers_photos CASCADE;
+-- Note: May revise date_written type due to transformed data
 
 CREATE TABLE IF NOT EXISTS questions (
   id SERIAL PRIMARY KEY,
