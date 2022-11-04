@@ -1,7 +1,6 @@
 -- DROP TABLE IF EXISTS questions CASCADE;
 -- DROP TABLE IF EXISTS answers CASCADE;
 -- DROP TABLE IF EXISTS answers_photos CASCADE;
--- Note: May revise date_written type due to transformed data
 
 CREATE TABLE IF NOT EXISTS questions (
   id SERIAL PRIMARY KEY,
@@ -14,7 +13,6 @@ CREATE TABLE IF NOT EXISTS questions (
   helpful INTEGER DEFAULT 0
 );
 
-\COPY questions FROM 'csv_files/questions.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE IF NOT EXISTS answers (
   id SERIAL PRIMARY KEY,
@@ -28,7 +26,6 @@ CREATE TABLE IF NOT EXISTS answers (
   FOREIGN KEY (question_id) REFERENCES questions (id)
 );
 
-\COPY answers FROM 'csv_files/answers.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE IF NOT EXISTS answers_photos (
   id SERIAL PRIMARY KEY,
@@ -36,5 +33,16 @@ CREATE TABLE IF NOT EXISTS answers_photos (
   photo_url TEXT,
   FOREIGN KEY (answer_id) REFERENCES answers (id)
 );
+-- Import CSV file into tables
+
+\COPY questions FROM 'csv_files/questions.csv' DELIMITER ',' CSV HEADER;
+
+\COPY answers FROM 'csv_files/answers.csv' DELIMITER ',' CSV HEADER;
 
 \COPY answers_photos FROM 'csv_files/answers_photos.csv' DELIMITER ',' CSV HEADER;
+
+-- Alter date column types and reformat
+
+ALTER TABLE questions ALTER COLUMN date_written TYPE TIMESTAMP USING to_timestamp(date_written/1000);
+
+ALTER TABLE answers ALTER COLUMN date_written TYPE TIMESTAMP USING to_timestamp(date_written/1000);
