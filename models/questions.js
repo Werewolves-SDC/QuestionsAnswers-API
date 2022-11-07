@@ -3,7 +3,7 @@ const db = require('../database/postgreSQL/db.js');
 
 module.exports = {
   // use async to return promise + wrap non-promises in func
-  getAllQuestions: async (product_id) => {
+  getAllQuestions: async (product_id, page, count) => {
     const questionList = {};
     // set query string w/ json aggregate to put into array
     const questionQuery = `SELECT row_to_json(questions) FROM (SELECT question_id, product_id, question_body, question_date, asker_name, reported, question_helpfulness FROM "questions") questions WHERE product_id = ${product_id} AND reported = false `;
@@ -85,10 +85,19 @@ module.exports = {
     questionList.results = questionObjs;
     return new Promise((res, rej) => res(questionList));
   },
+  addQuestion: (question) => {
+    const values = Object.values(question);
+
+    const addQ = `INSERT INTO questions (product_id, question_body, question_date, asker_name, asker_email) VALUES ($4, $1, current_timestamp, $2, $3)`;
+    return db.query(addQ, values);
+  },
   updateQHelpful: (question_id) => {
-    // create query to update helpful count
     const updateHelpful = `UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${question_id} `;
-    // invoke query into db
     return db.query(updateHelpful);
+  },
+
+  updateQReport: (question_id) => {
+    const updateReport = `UPDATE questions SET reported = true WHERE question_id = ${question_id} `;
+    return db.query(updateReport);
   },
 };

@@ -47,3 +47,15 @@ ALTER TABLE questions ALTER COLUMN question_date TYPE TIMESTAMP USING to_timesta
 
 ALTER TABLE answers ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date/1000);
 
+-- Get last ID #
+-- SELECT MAX(question_id) FROM questions
+-- SELECT MAX(id) FROM answers
+-- SELECT MAX(id) FROM answers_photos
+
+-- Restart sequence #
+
+-- ALTER SEQUENCE questions_question_id_seq RESTART WITH 3518964
+
+-- ALTER SEQUENCE answers_id_seq RESTART WITH 6879307
+
+-- ALTER SEQUENCE answers_photos_id_seq RESTART WITH 2063760
