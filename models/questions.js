@@ -3,7 +3,7 @@ const db = require('../database/postgreSQL/db.js');
 
 module.exports = {
   // use async to return promise + wrap non-promises in func
-  getAllQuestions: async (product_id, page, count) => {
+  getAllQuestions: (product_id, page, count) => {
     // set query string w/ json aggregate to put into array
     const questionQuery = `SELECT json_agg(
       json_build_object(
@@ -28,7 +28,7 @@ module.exports = {
              FROM (SELECT id, photo_url from answers_photos p WHERE p.answer_id = a.id) p)
            )
           )
-        ),'[]') FROM answers a where a.question_id = q.question_id
+        ),'{}') FROM answers a where a.question_id = q.question_id
       )
     )
    ) as results FROM questions q WHERE q.reported = false and q.product_id = ${product_id}`;

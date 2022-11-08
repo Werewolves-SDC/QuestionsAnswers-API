@@ -59,3 +59,7 @@ ALTER TABLE answers ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date/100
 -- ALTER SEQUENCE answers_id_seq RESTART WITH 6879307
 
 -- ALTER SEQUENCE answers_photos_id_seq RESTART WITH 2063760
+
+-- Index
+-- CREATE INDEX product_id_index
+-- ON questions(product_id);

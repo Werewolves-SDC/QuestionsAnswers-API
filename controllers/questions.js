@@ -7,11 +7,17 @@ const getAllQs = (req, res) => {
   // invoke model to update/request data'
   const questions = { product_id };
   models
-    .getAllQuestions(product_id)
+    .getAllQuestions(product_id, count, page)
     .then((data) => {
-      const results = data.rows[0];
-      console.log(results.results);
-      questions.results = results.results;
+      if (data.rows[0] > 0) {
+        const result = data.rows[0].results.slice(0, count);
+        questions.results = result;
+      } else {
+        questions.results = [];
+      }
+
+      // console.log('RESULT', result);
+      // console.log('QUESTIONS', questions);
       res.status(200).json(questions);
     })
     .catch((err) => console.log(err));
