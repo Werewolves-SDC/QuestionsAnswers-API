@@ -3,14 +3,14 @@
 -- DROP TABLE IF EXISTS answers_photos CASCADE;
 
 CREATE TABLE IF NOT EXISTS questions (
-  id SERIAL PRIMARY KEY,
+  question_id SERIAL PRIMARY KEY,
   product_id INTEGER NOT NULL,
-  body VARCHAR (1000) NOT NULL,
-  date_written BIGINT,
+  question_body VARCHAR (1000) NOT NULL,
+  question_date BIGINT,
   asker_name VARCHAR (60) NOT NULL,
   asker_email VARCHAR (60) NOT NULL,
   reported BOOLEAN NOT NULL DEFAULT FALSE,
-  helpful INTEGER DEFAULT 0
+  question_helpfulness INTEGER DEFAULT 0
 );
 
 
@@ -18,12 +18,12 @@ CREATE TABLE IF NOT EXISTS answers (
   id SERIAL PRIMARY KEY,
   question_id INTEGER,
   body VARCHAR (1000),
-  date_written BIGINT,
+  date BIGINT,
   answerer_name VARCHAR (60),
   answerer_email VARCHAR (60),
   reported BOOLEAN NOT NULL DEFAULT FALSE,
-  helpful INTEGER DEFAULT 0,
-  FOREIGN KEY (question_id) REFERENCES questions (id)
+  helpfulness INTEGER DEFAULT 0,
+  FOREIGN KEY (question_id) REFERENCES questions (question_id)
 );
 
 
@@ -43,6 +43,23 @@ CREATE TABLE IF NOT EXISTS answers_photos (
 
 -- Alter date column types and reformat
 
-ALTER TABLE questions ALTER COLUMN date_written TYPE TIMESTAMP USING to_timestamp(date_written/1000);
+ALTER TABLE questions ALTER COLUMN question_date TYPE TIMESTAMP USING to_timestamp(question_date/1000);
 
-ALTER TABLE answers ALTER COLUMN date_written TYPE TIMESTAMP USING to_timestamp(date_written/1000);
+ALTER TABLE answers ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date/1000);
+
+-- Get last ID #
+-- SELECT MAX(question_id) FROM questions
+-- SELECT MAX(id) FROM answers
+-- SELECT MAX(id) FROM answers_photos
+
+-- Restart sequence #
+
+-- ALTER SEQUENCE questions_question_id_seq RESTART WITH 3518964
+
+-- ALTER SEQUENCE answers_id_seq RESTART WITH 6879307
+
+-- ALTER SEQUENCE answers_photos_id_seq RESTART WITH 2063760
+
+-- Index
+-- CREATE INDEX product_id_index
+-- ON questions(product_id);
