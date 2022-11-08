@@ -27,7 +27,7 @@ module.exports = {
              SELECT coalesce (json_agg(row_to_json(p)), '[]')
              FROM (SELECT id, photo_url from answers_photos p WHERE p.answer_id = a.id) p)
            )
-        )
+          )
         ),'[]') FROM answers a where a.question_id = q.question_id
       )
     )

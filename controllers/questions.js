@@ -9,7 +9,9 @@ const getAllQs = (req, res) => {
   models
     .getAllQuestions(product_id)
     .then((data) => {
-      questions.results = data.rows.results.slice(0, count);
+      const results = data.rows[0];
+      console.log(results.results);
+      questions.results = results.results;
       res.status(200).json(questions);
     })
     .catch((err) => console.log(err));
