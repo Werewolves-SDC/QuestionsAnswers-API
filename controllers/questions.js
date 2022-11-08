@@ -5,9 +5,13 @@ const models = require('../models/questions.js');
 const getAllQs = (req, res) => {
   const { product_id, page, count } = req.query;
   // invoke model to update/request data'
+  const questions = { product_id };
   models
-    .getAllQuestions(product_id, page, count)
-    .then((data) => res.status(200).json(data))
+    .getAllQuestions(product_id)
+    .then((data) => {
+      questions.results = data.rows.results.slice(0, count);
+      res.status(200).json(questions);
+    })
     .catch((err) => console.log(err));
 };
 

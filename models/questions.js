@@ -4,86 +4,37 @@ const db = require('../database/postgreSQL/db.js');
 module.exports = {
   // use async to return promise + wrap non-promises in func
   getAllQuestions: async (product_id, page, count) => {
-    const questionList = {};
     // set query string w/ json aggregate to put into array
-    const questionQuery = `SELECT row_to_json(questions) FROM (SELECT question_id, product_id, question_body, question_date, asker_name, reported, question_helpfulness FROM "questions") questions WHERE product_id = ${product_id} AND reported = false `;
+    const questionQuery = `SELECT json_agg(
+      json_build_object(
+        'question_id', q.question_id,
+        'question_body', q.question_body,
+        'question_date', q.question_date,
+        'asker_name', q.asker_name,
+        'asker_email', q.asker_email,
+        'reported', q.reported,
+        'answers', (
+        SELECT coalesce(json_object_agg (
+        a.id, (
+          SELECT json_build_object (
+          'id', a.id,
+          'body', a.body,
+          'date', a.date,
+          'answerer_name', a.answerer_name,
+          'answerer_email', a.answerer_email,
+          'helpfulness', a.helpfulness,
+           'photos', (
+             SELECT coalesce (json_agg(row_to_json(p)), '[]')
+             FROM (SELECT id, photo_url from answers_photos p WHERE p.answer_id = a.id) p)
+           )
+        )
+        ),'[]') FROM answers a where a.question_id = q.question_id
+      )
+    )
+   ) as results FROM questions q WHERE q.reported = false and q.product_id = ${product_id}`;
 
     // create questionObjs container
-    const questionObjs = [];
-    await db
-      .query(questionQuery)
-      .then((data) => {
-        // iterate thru data to push each question obj in questionObjs
-        data.rows.forEach((question) => {
-          const qObj = question.row_to_json;
-          questionObjs.push(qObj);
-        });
-      })
-      .catch((err) => console.log(err));
-    // console.log('QUESTION OBJECT', questionObjs);
-
-    // get all answers by mapping over questionObjs to get array of ids to query
-    // iterate thru qObjs array, push id into array,  map and query
-
-    const allAnswers = await Promise.all(
-      questionObjs.map((question) => {
-        const { question_id } = question;
-        const answerQuery = `SELECT row_to_json(answers) FROM (SELECT id, question_id, body, date, answerer_name, reported, helpfulness FROM "answers") answers WHERE question_id = ${question_id} AND reported = false`;
-        // return query (promise)
-        return db.query(answerQuery);
-      })
-    );
-
-    // console.log('ALL ANSWERS', allAnswers);
-    const answerObjs = [];
-
-    const answers = allAnswers.forEach((answer) => answerObjs.push(answer.rows));
-    // console.log('ANSWERS OBJECTS', answerObjs);
-
-    // answer in array -> answers and questions = length, use index
-
-    const answerIDs = [];
-    questionObjs.forEach((question, index) => {
-      const ansObj = {};
-      for (let i = 0; i < answerObjs[index].length; i++) {
-        const key = answerObjs[index][i].row_to_json.id;
-        answerIDs.push(key);
-        ansObj[key] = answerObjs[index][i].row_to_json;
-      }
-      question.answers = ansObj;
-    });
-
-    // console.log('ANSWER IDS', answerIDs);
-
-    const allPhotos = await Promise.all(
-      answerIDs.map((id, index) => {
-        const answer_id = id.toString();
-        const photoQuery = `SELECT * FROM answers_photos WHERE answer_id = ${answer_id}`;
-        return db.query(photoQuery);
-      })
-    );
-
-    // console.log('ALL PHOTOS', allPhotos);
-
-    const photoObjs = [];
-
-    const photos = allPhotos.forEach((photo) => photoObjs.push(photo.rows));
-
-    // photoObjs.forEach((photo) => {
-    //   const id = photo.answer_id;
-    // });
-    // console.log('PHOTO OBJS', photoObjs);
-    // iterate thru each answer obj and create photos key and assign it to whatever is at the same index w/in photos objects
-
-    answerObjs.forEach((answer, index) => {
-      // console.log('PHOTO ARRAY', photoById);
-      answer.photos = photoObjs[index];
-    });
-    // NTS: unable to get photos...
-
-    questionList.product_id = product_id;
-    questionList.results = questionObjs;
-    return new Promise((res, rej) => res(questionList));
+    return db.query(questionQuery);
   },
   addQuestion: (question) => {
     const values = Object.values(question);
