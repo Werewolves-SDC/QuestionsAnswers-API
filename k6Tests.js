@@ -26,7 +26,7 @@ const BASE_URL = 'http://localhost:3000';
 export default () => {
   // local test
   http.get(`${BASE_URL}/qa/questions?product_id=${randomProductID}`);
-  http.get(`${BASE_URL}/qa/questions/${randomQuestionID}/answers`);
+  // http.get(`${BASE_URL}/qa/questions/${randomQuestionID}/answers`);
   sleep(1);
   // const responses = http.batch([
   //   ['GET', `${BASE_URL}/qa/questions?product_id=${randomProductID}`],
