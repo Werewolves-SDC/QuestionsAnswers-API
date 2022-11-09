@@ -60,6 +60,13 @@ ALTER TABLE answers ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date/100
 
 -- ALTER SEQUENCE answers_photos_id_seq RESTART WITH 2063760
 
--- Index
+-- Create single index
 -- CREATE INDEX product_id_index
 -- ON questions(product_id);
+-- CREATE INDEX question_id_index ON answers(question_id)
+-- CREATE INDEX answer_id_index ON answers_photos(answer_id)
+-- Create multicolumn index
+-- CREATE INDEX index_name
+-- ON table_name (column1_name, column2_name);
+-- Drop Index
+-- DROP INDEX index_name;

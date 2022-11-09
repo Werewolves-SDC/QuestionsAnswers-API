@@ -30,15 +30,15 @@ const lastTenQID = Math.floor(Math.random() * (3518964 - 3167068 + 1) + 3167068)
 const BASE_URL = 'http://localhost:3000';
 
 export default () => {
-  // local test
+  // getAllQuestions local test
   // http.get(`${BASE_URL}/qa/questions?product_id=${randomProductID}&page=1&count=5`);
+  // getAnswers local test
+  http.get(`${BASE_URL}/qa/questions/${randomQuestionID}/answers`);
 
-  // http.get(`${BASE_URL}/qa/questions/${randomQuestionID}/answers`);
-
-  // last 10%
+  // last 10% getAllQuestions
   // http.get(`${BASE_URL}/qa/questions?product_id=${lastTenPID}&page=1&count=5`);
-
-  http.get(`${BASE_URL}/qa/questions/${lastTenQID}/answers`);
+  // last 10% getAnswers
+  // http.get(`${BASE_URL}/qa/questions/${lastTenQID}/answers`);
 
   sleep(1);
   // const responses = http.batch([
