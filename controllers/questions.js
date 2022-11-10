@@ -9,15 +9,13 @@ const getAllQs = (req, res) => {
   models
     .getAllQuestions(product_id, count, page)
     .then((data) => {
-      if (data.rows[0] > 0) {
+      // console.log('data row results', data.rows[0].results.length);
+      if (data.rows[0].results) {
         const result = data.rows[0].results.slice(0, count);
         questions.results = result;
       } else {
         questions.results = [];
       }
-
-      // console.log('RESULT', result);
-      // console.log('QUESTIONS', questions);
       res.status(200).json(questions);
     })
     .catch((err) => console.log(err));
