@@ -18,16 +18,8 @@ const getAllAnswers = (req, res) => {
 };
 const addAnswer = (req, res) => {
   const { photos } = req.body;
-  console.log('PHTOS', photos);
   models
     .addAns(req.params.question_id, req.body)
-    // .then((data) => {
-    //   // console.log('HERE', data.rows[0].id);
-    //   const { id } = data.rows;
-    //   // console.log('PHOTOS', photos);
-    //   // console.log('ID', id);
-    //   models.addPhotos(id, photos);
-    // })
     .then(() => res.status(201).send('Successful addition'))
     .catch((err) => res.status(400).send('Unable to add answer'));
 };

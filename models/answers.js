@@ -9,7 +9,6 @@ module.exports = {
   addAns: (question_id, answer) => {
     const values = Object.values(answer);
     const addAnsQuery = `INSERT INTO answers (question_id, body, date, answerer_name, answerer_email) VALUES (${question_id}, $1, current_timestamp, $2, $3) RETURNING id`;
-    // adding photos = WIP
 
     return db.query(addAnsQuery, values);
   },

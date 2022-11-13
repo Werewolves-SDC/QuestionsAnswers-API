@@ -9,8 +9,9 @@
   },
   "scripts": {
     "test": "jest",
-    "server-dev": "npx nodemon --watch server server/index.js",
-    "get-questions-test": "k6 run tests/getAllQuestions.js"
+    "server-dev": "npx nodemon server/index.js",
+    "get-questions-test": "k6 run tests/getAllQuestions.js",
+    "stress-test": "k6 run tests/stressTest.js"
   },
   "author": "Kally Cao",
   "license": "ISC",

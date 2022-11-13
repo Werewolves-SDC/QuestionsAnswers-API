@@ -5,7 +5,7 @@ module.exports = {
   // use async to return promise + wrap non-promises in func
   getAllQuestions: (product_id, page, count) => {
     // set query string w/ json aggregate to put into array
-    const questionQuery = `SELECT json_agg(
+    const questionQuery = `SELECT ${product_id} product_id, json_agg(
       json_build_object(
         'question_id', q.question_id,
         'question_body', q.question_body,

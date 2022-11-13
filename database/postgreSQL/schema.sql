@@ -65,6 +65,7 @@ ALTER TABLE answers ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date/100
 -- ON questions(product_id);
 -- CREATE INDEX question_id_index ON answers(question_id)
 -- CREATE INDEX answer_id_index ON answers_photos(answer_id)
+-- CREATE INDEX q_id_index ON questions(question_id)
 -- Create multicolumn index
 -- CREATE INDEX index_name
 -- ON table_name (column1_name, column2_name);

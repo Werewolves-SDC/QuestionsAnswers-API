@@ -9,14 +9,7 @@ const getAllQs = (req, res) => {
   models
     .getAllQuestions(product_id, count, page)
     .then((data) => {
-      // console.log('data row results', data.rows[0].results.length);
-      if (data.rows[0].results) {
-        const result = data.rows[0].results.slice(0, count);
-        questions.results = result;
-      } else {
-        questions.results = [];
-      }
-      res.status(200).json(questions);
+      res.send(data.rows[0]);
     })
     .catch((err) => console.log(err));
 };
@@ -27,10 +20,6 @@ const addQuestion = (req, res) => {
     .then((data) => res.status(201).send(data))
     .catch((err) => res.sendStatus(400));
 };
-
-// const addAnswer = (req, res) => {
-
-// }
 
 const updateQuestionHelpful = (req, res) => {
   models
