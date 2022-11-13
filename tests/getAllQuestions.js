@@ -4,6 +4,7 @@
 
 import http from 'k6/http';
 import { sleep } from 'k6';
+// to run test: npm run get-questions-test
 
 export const options = {
   discardResponseBodies: true,
@@ -69,49 +70,28 @@ const controlPIDTen = 950009;
 const BASE_URL = 'http://localhost:3000';
 
 export function oneRPS() {
-  // getAllQuestions local test
-  http.get(`${BASE_URL}/qa/questions?product_id=${220409}&page=1&count=5`, {
+  http.get(`${BASE_URL}/qa/questions?product_id=${lastTenPID}&page=1&count=5`, {
     tags: { my_custom_tag: 'oneRPS' },
   });
   sleep(1);
 }
 
 export function tenRPS() {
-  // getAllQuestions local test
-  http.get(`${BASE_URL}/qa/questions?product_id=${220409}&page=1&count=5`, {
+  http.get(`${BASE_URL}/qa/questions?product_id=${lastTenPID}&page=1&count=5`, {
     tags: { my_custom_tag: 'tenRPS' },
   });
   sleep(1);
 }
 
 export function hundredRPS() {
-  // getAllQuestions local test
-  http.get(`${BASE_URL}/qa/questions?product_id=${220409}&page=1&count=5`, {
+  http.get(`${BASE_URL}/qa/questions?product_id=${lastTenPID}&page=1&count=5`, {
     tags: { my_custom_tag: 'hundredRPS' },
   });
   sleep(1);
 }
 export function thousandRPS() {
-  // getAllQuestions local test
-  http.get(`${BASE_URL}/qa/questions?product_id=${220409}&page=1&count=5`, {
+  http.get(`${BASE_URL}/qa/questions?product_id=${lastTenPID}&page=1&count=5`, {
     tags: { my_custom_tag: 'thousandRPS' },
   });
   sleep(1);
 }
-// // getAnswers local test
-// http.get(`${BASE_URL}/qa/questions/${randomQuestionID}/answers`);
-// export function thousandRPS() {
-//   // getAllQuestions local test
-//   http.get(`${BASE_URL}/qa/questions?product_id=${220409}&page=1&count=5`, {
-//     tags: { my_custom_tag: 'thousandRPS' },
-//   });
-//   sleep(1);
-// }
-
-// last 10% getAllQuestions
-// http.get(`${BASE_URL}/qa/questions?product_id=${lastTenPID}&page=1&count=5`);
-// last 10% getAnswers
-// http.get(`${BASE_URL}/qa/questions/${lastTenQID}/answers`);
-
-// UPDATE HELPFUL COUNT
-// http.put(`${BASE_URL}/qa/questions/:${randomQuestionID}/helpful`);
